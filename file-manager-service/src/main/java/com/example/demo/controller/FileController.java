@@ -35,4 +35,21 @@ public class FileController {
             ));
         }
     }
+
+    @GetMapping("/presigned-url")
+    public ResponseEntity<?> getPresignedUrl(@RequestParam("fileName") String fileName) {
+        try {
+            String presignedUrl = fileService.generatePresignedUrl(fileName);
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "presignedUrl", presignedUrl,
+                    "bucket", "sgp1.digitaloceanspaces.com"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "success", false,
+                    "message", "Failed to generate presigned URL"
+            ));
+        }
+    }
 }
