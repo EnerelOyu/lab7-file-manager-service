@@ -52,7 +52,7 @@ public class FileService {
     }
 
     //Presigned URL авдаг. Frontend нь энэ URL ашиглан шууд S3 руу файл upload хийх боломжтой.
-    public String generatePresignedUrl(String fileName) {
+    public String generatePresignedUrl(String fileName, String contentType) {
         // Файлын нэр үүсгэх
         String uniqueFileName = UUID.randomUUID() + "_" + fileName;
 
@@ -61,7 +61,8 @@ public class FileService {
 
         GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, uniqueFileName)
                 .withMethod(HttpMethod.PUT)
-                .withExpiration(expiration);
+                .withExpiration(expiration)
+                .withContentType(contentType);
 
         URL presignedUrl = amazonS3.generatePresignedUrl(request);
 

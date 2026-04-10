@@ -37,9 +37,11 @@ public class FileController {
     }
 
     @GetMapping("/presigned-url")
-    public ResponseEntity<?> getPresignedUrl(@RequestParam("fileName") String fileName) {
+    public ResponseEntity<?> getPresignedUrl(
+            @RequestParam("fileName") String fileName,
+            @RequestParam(value = "contentType", defaultValue = "application/octet-stream") String contentType) {
         try {
-            String presignedUrl = fileService.generatePresignedUrl(fileName);
+            String presignedUrl = fileService.generatePresignedUrl(fileName, contentType);
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "presignedUrl", presignedUrl,
